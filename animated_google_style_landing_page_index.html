@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Search — Animated Landing</title>
+  <style>
+    :root{
+      --bg1:#ffffff;
+      --bg2:#f3f7ff;
+      --accent:#1a73e8;
+      --glass: rgba(255,255,255,0.7);
+      --muted:#6b7280;
+      --radius:18px;
+    }
+    html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    body{
+      background: radial-gradient(circle at 10% 20%, #eef6ff 0%, transparent 20%), radial-gradient(circle at 90% 80%, #fff7f0 0%, transparent 18%), linear-gradient(180deg,var(--bg1),var(--bg2));
+      display:flex;align-items:center;justify-content:center;padding:40px;
+    }
+    .card{
+      width:min(980px,96vw);
+      background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.7));
+      border-radius:28px;box-shadow:0 20px 50px rgba(19,24,44,0.12);padding:44px;backdrop-filter: blur(6px);
+      position:relative;overflow:hidden;
+    }
+    /* floating decorative blobs */
+    .blob{position:absolute;border-radius:50%;filter:blur(28px);opacity:0.9;transform:translate3d(0,0,0)}
+    .blob.a{width:260px;height:260px;left:-80px;top:-70px;background:linear-gradient(135deg,#ffe6f0,#ffd1d1);animation:floatA 8s ease-in-out infinite}
+    .blob.b{width:380px;height:380px;right:-120px;bottom:-120px;background:linear-gradient(135deg,#dfefff,#d2f4ff);animation:floatB 10s ease-in-out infinite}
+    @keyframes floatA{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(18px) rotate(6deg)}100%{transform:translateY(0) rotate(0)}}
+    @keyframes floatB{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-24px) rotate(-5deg)}100%{transform:translateY(0) rotate(0)}}
+
+    .top{display:flex;align-items:center;gap:18px}
+    .logo{
+      width:76px;height:76px;border-radius:18px;background:linear-gradient(180deg,#fff,#f7fbff);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(26,115,232,0.12);}
+    .logo .g{font-weight:700;font-size:34px;color:var(--accent);letter-spacing:-1px}
+    h1{font-size:22px;margin:0}
+    p.lead{margin:6px 0 20px;color:var(--muted)}
+
+    /* search */
+    .search-wrap{margin-top:18px;display:flex;align-items:center;gap:18px}
+    .search{
+      flex:1;background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(245,247,255,0.8));padding:18px;border-radius:14px;border:1px solid rgba(15,23,42,0.04);display:flex;align-items:center;gap:12px;box-shadow:0 6px 18px rgba(11,27,68,0.04) inset;
+      transition:transform .28s ease, box-shadow .28s ease;
+    }
+    .search:focus-within{transform:translateY(-4px);box-shadow:0 18px 40px rgba(26,115,232,0.06)}
+    .search input{flex:1;border:0;outline:none;background:transparent;font-size:18px}
+    .chip{background:var(--glass);padding:10px 12px;border-radius:999px;border:1px solid rgba(11,27,68,0.04);font-weight:600}
+
+    .buttons{display:flex;gap:12px;margin-left:8px}
+    .btn{padding:11px 14px;border-radius:10px;border:0;background:transparent;font-weight:700;cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#3aa2ff);color:white;box-shadow:0 8px 24px rgba(26,115,232,0.14)}
+    .btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(11,27,68,0.06)}
+
+    /* animated suggestions */
+    .suggestions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+    .suggestion{padding:8px 12px;background:rgba(250,250,255,0.7);border-radius:999px;border:1px solid rgba(11,27,68,0.03);font-size:14px;color:#223;cursor:pointer;transition:transform .15s ease}
+    .suggestion:hover{transform:translateY(-4px)}
+
+    /* footer small */
+    .footer{display:flex;justify-content:space-between;align-items:center;margin-top:26px;color:var(--muted);font-size:13px}
+
+    /* small screens */
+    @media (max-width:520px){
+      .card{padding:20px;border-radius:16px}
+      .logo{width:58px;height:58px}
+      .g{font-size:28px}
+      .search input{font-size:16px}
+    }
+
+    /* subtle entry animations */
+    .card{opacity:0;transform:translateY(12px) scale(.997);animation:cardIn .6s cubic-bezier(.2,.9,.3,1) forwards}
+    @keyframes cardIn{to{opacity:1;transform:none}}
+    .logo{animation:pop 800ms cubic-bezier(.2,.9,.3,1)}
+    @keyframes pop{0%{transform:scale(.92)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <div class="blob a" aria-hidden="true"></div>
+    <div class="blob b" aria-hidden="true"></div>
+
+    <div class="top">
+      <div class="logo" aria-hidden="true"><div class="g">G</div></div>
+      <div style="flex:1">
+        <h1>Fast, clean search — demo</h1>
+        <p class="lead">Ek halka sa animated landing jise aap share kar sakte hain. Search bar, animated blobs aur copy-link button included.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+        <div class="chip">Free demo</div>
+      </div>
+    </div>
+
+    <div class="search-wrap">
+      <div class="search" id="searchBox" role="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="#9aa4be" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="11" cy="11" r="6" stroke="#9aa4be" stroke-width="1.6"></circle></svg>
+        <input id="q" placeholder="Search or type a link..." />
+        <button class="btn" id="voice" title="Voice demo">🎤</button>
+      </div>
+
+      <div class="buttons">
+        <button class="btn primary" id="searchBtn">Search</button>
+        <button class="btn ghost" id="copyBtn">Copy link</button>
+      </div>
+    </div>
+
+    <div class="suggestions" id="suggestions">
+      <div class="suggestion">Weather today</div>
+      <div class="suggestion">Eid animals</div>
+      <div class="suggestion">Cholistani breed</div>
+      <div class="suggestion">Local markets</div>
+      <div class="suggestion">Contact me</div>
+    </div>
+
+    <div class="footer">
+      <div>Made with ❤️ — demo page</div>
+      <div style="display:flex;gap:12px"><small>Dark</small><small>Light</small></div>
+    </div>
+  </div>
+
+  <script>
+    // Basic interactions
+    const q = document.getElementById('q');
+    const suggestions = Array.from(document.querySelectorAll('.suggestion'));
+    suggestions.forEach(s=>s.addEventListener('click', ()=>{ q.value = s.textContent; document.getElementById('searchBtn').click(); }));
+
+    document.getElementById('searchBtn').addEventListener('click', ()=>{
+      const val = q.value.trim();
+      if(!val) return animateShake();
+      // for demo: open google search in new tab
+      const url = val.includes(' ') || !val.includes('.') ? 'https://www.google.com/search?q='+encodeURIComponent(val) : (val.startsWith('http')? val : 'https://'+val);
+      window.open(url, '_blank');
+    });
+
+    function animateShake(){
+      const el = document.getElementById('searchBox');
+      el.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{duration:320,iterations:1});
+    }
+
+    // copy link
+    document.getElementById('copyBtn').addEventListener('click', async ()=>{
+      try{
+        await navigator.clipboard.writeText(location.href);
+        const btn = document.getElementById('copyBtn'); btn.textContent = 'Copied!'; setTimeout(()=>btn.textContent='Copy link',1400);
+      }catch(e){
+        alert('Clipboard not available — just copy the URL from the address bar.');
+      }
+    });
+
+    // small animated placeholder typing
+    const phrases = ['Find local markets','Eid animals for sale','Cholistani calves','Contact seller'];
+    let i=0,sIdx=0;
+    setInterval(()=>{
+      q.placeholder = phrases[i].slice(0, sIdx) + (sIdx%2? '|' : '');
+      sIdx++;
+      if(sIdx>phrases[i].length+2){ sIdx=0; i=(i+1)%phrases.length; }
+    },150);
+
+    // quick copy of demo to user's clipboard as HTML option
+    async function copyHTML(){
+      const html = '<!doctype html>\n' + document.documentElement.outerHTML;
+      try{ await navigator.clipboard.writeText(html); }catch(e){/* ignore */}
+    }
+
+    // keyboard shortcut Ctrl/Cmd+K focuses search
+    window.addEventListener('keydown', (e)=>{
+      if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); q.focus(); }
+    });
+  </script>
+</body>
+</html>
